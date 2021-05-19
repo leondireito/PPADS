@@ -1,0 +1,29 @@
+<form [formGroup]='registerForm' (ngSubmit)="registerForm.valid && addMidia()" autocomplete="off">
+
+    <div class="col-10">
+
+        <hr>
+
+
+        <app-text-input [formControl]='registerForm.controls["titulo"]' [label]='"Titulo"'></app-text-input>
+        <app-text-input [formControl]='registerForm.controls["diretor"]' [label]='"Diretor"'></app-text-input>
+
+        <app-text-input [formControl]='registerForm.controls["temporadas"]' [label]='"Temporadas"'></app-text-input>
+        <app-text-input [formControl]='registerForm.controls["ano"]' [label]='"Lançamento (ano)"'></app-text-input>
+        <app-text-input [formControl]='registerForm.controls["pais"]' [label]='"Pais"'></app-text-input>
+
+
+        <div class="row" *ngIf="validationErrors.length > 0">
+            <ul class="text-danger">
+                <li *ngFor="let error of validationErrors">
+                    {{error}}
+                </li>
+            </ul>
+        </div>
+
+        <div class="form-group text-center">
+            <button [disabled]='!registerForm.valid' class="btn btn-success mr-2" type="submit">Adicionar Série</button>
+            <button class="btn btn-default mr-2" (click)="cancel()" type="button">Cancelar</button>
+        </div>
+    </div>
+</form> 

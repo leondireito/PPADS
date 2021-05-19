@@ -1,36 +1,61 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
     <div class="container">
+        <a class="navbar-brand" routerLink='/' routerLinkActive='active'>Recomende</a>
 
-        <a class="navbar-brand" routerLink="/">Recommend</a>
+        <!-- <ng-container *ngIf="accountService.currentUser$ | async">
+            <div class="dropdown" dropdown>
+                <a class="dropdown-toggle text-light ml-2" dropdownToggle>Membros</a>
+                <div class="dropdown-menu mt-3" *dropdownMenu>
+                    <a routerLink='/members' class="dropdown-item">Membros</a>
+                    <div class="dropdown-divider"></div>
+                    <a routerLink='/member/add' class="dropdown-item">Cadastrar Membro</a>
+                    <div class="dropdown-divider"></div>
+                    <a routerLink='/member/edit' class="dropdown-item">Editar Membro</a>
+                </div>
+            </div>
+        </ng-container> -->
 
 
-        <ul class="navbar-nav me-auto mb-2 mb-md-0" >
-           
+        <ul class="navbar-nav mr-auto">
             <ng-container *ngIf="accountService.currentUser$ | async">
                 <li class="nav-item">
-                    <a class="nav-link " routerLink="/members" routerLinkActive="active" >Members</a>
+                    <a class="nav-link" routerLink='/' routerLinkActive='active'>Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/lists"  routerLinkActive="active">Lists</a>
+                    <a class="nav-link" routerLink='/members' routerLinkActive='active'>Membros</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " routerLink="/messages"  routerLinkActive="active">Messages</a>
+                    <a class="nav-link" routerLink='/midias' routerLinkActive='active'>Midias</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink='/novoconteudo' routerLinkActive='active'>Aicionar Conteúdo</a>
+                </li>
+                <li *appHasRole='["Admin", "Moderator"]' class="nav-item">
+                    <a class="nav-link" routerLink='/admin' routerLinkActive='active'>Admin</a>
                 </li>
             </ng-container>
            
         </ul>
 
         <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
-            <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{user.userName}}</a>
-            <div class="dropdown-menu" *dropdownMenu>
-                <a class="dropdown-item ">Edit Profile</a>
+            <img src="{{user.photoUrl || './assets/user.png'}}" alt="{{user.username}}">
+            <a class="dropdown-toggle text-light ml-2" dropdownToggle>Ola {{user.knownAs || user.username |
+                titlecase}}</a>
+            <div class="dropdown-menu mt-3" *dropdownMenu>
+                <a routerLink='/member/edit' class="dropdown-item">Editar </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item " (click)="logiout()">Logout</a>
+                <a class="dropdown-item" (click)="logout()">Sair</a>
             </div>
         </div>
-       
+
+        <form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm"
+            class="form-inline mt-2 mt-md-0" (ngSubmit)="login()" autocomplete="off">
+            <input name="username" [(ngModel)]="model.username" class="form-control mr-sm-2" type="text"
+                placeholder="Usuário">
+            <input name="password" [(ngModel)]="model.password" class="form-control mr-sm-2" type="password"
+                placeholder="Senha">
+            <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
+        </form>
     </div>
-
-
 
 </nav>

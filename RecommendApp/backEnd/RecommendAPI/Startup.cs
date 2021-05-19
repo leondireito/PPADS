@@ -16,8 +16,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RecommendAPI.Data;
-using RecommendAPI.Extentions;
+using RecommendAPI.Extensions;
 using RecommendAPI.Interfaces;
+using RecommendAPI.Middleware;
 using RecommendAPI.Services;
 
 namespace RecommendAPI
@@ -35,37 +36,38 @@ namespace RecommendAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-           services.AddApplicationService(Config);
-           
+            services.AddApplicationServices(Config);
+            
             services.AddControllers();
-
             services.AddCors();
-
             services.AddIdentityServices(Config);
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RecommendAPI v1"));
-            }
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors(x => x.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .WithOrigins("https://localhost:4200", "http://localhost:4200"));
 
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+               // endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }
