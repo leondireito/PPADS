@@ -1,20 +1,13 @@
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using RecommendAPI.Data;
 using RecommendAPI.DTOs;
 using RecommendAPI.Entities;
 using RecommendAPI.Extensions;
 using RecommendAPI.Helpers;
 using RecommendAPI.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using RecommendAPI.Entities.Enums;
+
 
 namespace RecommendAPI.Controllers
 {
@@ -31,110 +24,70 @@ namespace RecommendAPI.Controllers
         }
 
         [HttpPost("addserie")]
-        public async Task<ActionResult> AddSerie(SerieDto serieDto)
+        public async Task<ActionResult> AddSerie(MidiaDto midiaDto)
         {
             var midia = new Serie();
-            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(serieDto.Username);
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(midiaDto.Username);
             if (user == null) return BadRequest("Usuario nao encontrado");
 
-            mapper.Map(serieDto, midia);
+            mapper.Map(midiaDto, midia);
             midia.User = user;
             midia.Criado = DateTime.Now;
-
-
-            foreach (var e in serieDto.ElencosDto)
-            {
-                midia.Elencos.Add(new Elenco { Nome = e.Nome });
-            }
 
             unitOfWork.MidiaRepository.AddMedia(midia);
 
             if (await unitOfWork.Complete())
             {
-                SerieDto newserieDto = new SerieDto();
-                mapper.Map(midia, newserieDto);
-
-                foreach (var e in midia.Elencos)
-                {
-                    newserieDto.ElencosDto.Add(new ElencoDto { Nome = e.Nome, Id = e.Id });
-                }
-
-                return Ok(newserieDto);
-
-
+                MidiaDto newMidia = new MidiaDto();
+                mapper.Map(midia, newMidia);
+                return Ok(newMidia);
             }
 
             return BadRequest("Problema ao adicionar Serie");
         }
 
         [HttpPost("addfilme")]
-        public async Task<ActionResult> AddFilme(FilmeDto filmeDto)
+        public async Task<ActionResult> AddFilme(MidiaDto midiaDto)
         {
             var midia = new Filme();
-            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(filmeDto.Username);
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(midiaDto.Username);
             if (user == null) return BadRequest("Usuario nao encontrado");
 
-            mapper.Map(filmeDto, midia);
+            mapper.Map(midiaDto, midia);
             midia.User = user;
             midia.Criado = DateTime.Now;
-
-
-            foreach (var e in filmeDto.ElencosDto)
-            {
-                midia.Elencos.Add(new Elenco { Nome = e.Nome });
-            }
 
             unitOfWork.MidiaRepository.AddMedia(midia);
 
             if (await unitOfWork.Complete())
             {
-                FilmeDto newfilmeDto = new FilmeDto();
-                mapper.Map(midia, newfilmeDto);
-
-                foreach (var e in midia.Elencos)
-                {
-                    newfilmeDto.ElencosDto.Add(new ElencoDto { Nome = e.Nome, Id = e.Id });
-                }
-
-                return Ok(newfilmeDto);
-
-
+                MidiaDto newMidia = new MidiaDto();
+                mapper.Map(midia, newMidia);
+                return Ok(newMidia);
             }
+
 
             return BadRequest("Problema ao adicionar Filme");
         }
 
-         [HttpPost("addlivro")]
-        public async Task<ActionResult> AddLivro(LivroDto livroDto )
+        [HttpPost("addlivro")]
+        public async Task<ActionResult> AddLivro(MidiaDto midiaDto)
         {
             var midia = new Livro();
-            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(livroDto.Username);
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(midiaDto.Username);
             if (user == null) return BadRequest("Usuario nao encontrado");
 
-            mapper.Map(livroDto, midia);
+            mapper.Map(midiaDto, midia);
             midia.User = user;
             midia.Criado = DateTime.Now;
-
-
-            foreach (var e in livroDto.AutoresDto)
-            {
-                midia.Autores.Add(new Autor { Nome = e.Nome });
-            }
 
             unitOfWork.MidiaRepository.AddMedia(midia);
 
             if (await unitOfWork.Complete())
             {
-                LivroDto newMidia = new LivroDto();
+                MidiaDto newMidia = new MidiaDto();
                 mapper.Map(midia, newMidia);
-
-                foreach (var e in midia.Autores)
-                {
-                    newMidia.AutoresDto.Add(new AutorDto { Nome = e.Nome, Id = e.Id });
-                }
-
                 return Ok(newMidia);
-
             }
 
             return BadRequest("Problema ao adicionar Filme");
@@ -151,6 +104,27 @@ namespace RecommendAPI.Controllers
                 midias.TotalCount, midias.TotalPages);
 
             return Ok(midias);
+        }
+
+        [HttpGet("getmidiasadm/{userParams}")]
+        public async Task<ActionResult<MidiaDto>> GetMidiasAdm([FromQuery] UserParams userParams)
+        {
+            userParams.Avaliado = false;
+            userParams.CurrentUsername = User.GetUsername();
+            var midias = await unitOfWork.MidiaRepository.GetMidiassAsync(userParams);
+
+            Response.AddPaginationHeader(midias.CurrentPage, midias.PageSize,
+                midias.TotalCount, midias.TotalPages);
+
+            return Ok(midias);
+        }
+
+        [HttpGet("{id}", Name = "GetMidia")]
+        public async Task<ActionResult<MidiaDto>> GetMidia(int id)
+        {
+            var midia = await unitOfWork.MidiaRepository.GetMidiaAsync(id);
+
+            return Ok(midia);
         }
 
     }

@@ -6,6 +6,5 @@ namespace RecommendAPI.Entities
     public class Filme:Midia, IMidia
     {
         public string Diretor { get; set; }
-        public ICollection<Elenco> Elencos { get; set; } = new List<Elenco>(); 
     }
 }

@@ -4,6 +4,7 @@ namespace RecommendAPI.Entities.Enums
     {
         Filme,
         Serie,
-        Livro
+        Livro,
+        Todos
     }
 }

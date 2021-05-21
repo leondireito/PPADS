@@ -29,9 +29,10 @@ namespace RecommendAPI.Data
         public DbSet<Filme> Filmes { get; set; }
         public DbSet<Serie> Series { get; set; }
         public DbSet<Livro> Livros { get; set; }
+        public DbSet<Avaliacao> Avaliacoes { get; set; }
+        public DbSet<MidiaLike> Midialikes { get; set; }
 
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<Tag> Tags { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

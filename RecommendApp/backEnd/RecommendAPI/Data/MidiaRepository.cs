@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RecommendAPI.DTOs;
@@ -9,7 +7,7 @@ using RecommendAPI.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using RecommendAPI.Data;
+using RecommendAPI.Entities.Enums;
 
 namespace RecommendAPI.Data
 {
@@ -34,54 +32,65 @@ namespace RecommendAPI.Data
                 context.Livros.Add(midia as Livro);
         }
 
-        public IEnumerable<IMidia> GetAllMidias()
-        {
-            var midias = new List<IMidia>();
 
-            midias.AddRange(GetSeries());
-            midias.AddRange(GetFilmes());
-            midias.AddRange(GetLivros());
-
-            return midias;
-
-        }
-
-         public async Task<PagedList<MidiaDto>> GetMidiassAsync(UserParams userParams)
+        public async Task<PagedList<MidiaDto>> GetMidiassAsync(UserParams userParams)
         {
             var query = context.Midias.Include(p => p.User).AsQueryable();
 
-           // query = query.Where(u => u.User.UserName != userParams.CurrentUsername);
-          
+            query = query.Where(x => x.Avaliado == userParams.Avaliado);
+
+            // query = query.Where(u => u.User.UserName != userParams.CurrentUsername);
+            if (userParams.MidiaTipo != MidiaTypeEnum.Todos)
+                query = query.Where(u => u.Tipo == userParams.MidiaTipo);
+
+            if (!string.IsNullOrEmpty(userParams.MidiaTitulo))
+                query = query.Where(u => u.Titulo.Contains(userParams.MidiaTitulo));
+
             query = userParams.OrderBy switch
             {
                 "created" => query.OrderBy(u => u.Criado),
                 _ => query.OrderByDescending(u => u.Criado)
             };
-            
+
             return await PagedList<MidiaDto>.CreateAsync(query.ProjectTo<MidiaDto>(mapper
-                .ConfigurationProvider).AsNoTracking(), 
+                .ConfigurationProvider).AsNoTracking(),
                     userParams.PageNumber, userParams.PageSize);
         }
 
-
-        public IEnumerable<Serie> GetSeries()
+        public async Task<MidiaDto> GetMidiaAsync(int id)
         {
-            return context.Series.Include(p => p.Elencos).ToList();
+            var midiaDto = new MidiaDto();
+
+            var m = context.Midias.Find(id);
+
+            if (m.Tipo == MidiaTypeEnum.Serie)
+            {
+                Serie serie = await context.Series
+                .Include(x => x.User)
+                .Include(x => x.Integrantes)
+                .FirstOrDefaultAsync(x => x.Id == id);
+                mapper.Map(serie, midiaDto);
+            }
+            else if (m.Tipo == MidiaTypeEnum.Filme)
+            {
+                Filme filme = await context.Filmes
+                .Include(x => x.User)
+                .Include(x => x.Integrantes)
+                .FirstOrDefaultAsync(x => x.Id == id);
+                mapper.Map(filme, midiaDto);
+            }
+            else if (m.Tipo == MidiaTypeEnum.Livro)
+            {
+                Livro livro = await context.Livros
+                .Include(x => x.User)
+                .Include(x => x.Integrantes)
+                .FirstOrDefaultAsync(x => x.Id == id);
+                mapper.Map(livro, midiaDto);
+            }
+
+            return midiaDto;
         }
 
-        public IEnumerable<Filme> GetFilmes()
-        {
-            return context.Filmes.Include(p => p.Elencos).ToList();
-        }
 
-        public IEnumerable<Livro> GetLivros()
-        {
-            return context.Livros.Include(p => p.Autores).ToList();
-        }
-
-        public IEnumerable<Post> GetPosts()
-        {
-            return context.Posts.Include(p => p.Tags).ToList();
-        }
     }
 }

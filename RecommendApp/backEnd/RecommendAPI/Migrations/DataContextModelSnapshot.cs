@@ -16,51 +16,6 @@ namespace RecommendAPI.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.5");
 
-            modelBuilder.Entity("AutorLivro", b =>
-                {
-                    b.Property<int>("AutoresId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LivrosId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("AutoresId", "LivrosId");
-
-                    b.HasIndex("LivrosId");
-
-                    b.ToTable("AutorLivro");
-                });
-
-            modelBuilder.Entity("ElencoFilme", b =>
-                {
-                    b.Property<int>("ElencosId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("FilmesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ElencosId", "FilmesId");
-
-                    b.HasIndex("FilmesId");
-
-                    b.ToTable("ElencoFilme");
-                });
-
-            modelBuilder.Entity("ElencoSerie", b =>
-                {
-                    b.Property<int>("ElencosId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SeriesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ElencosId", "SeriesId");
-
-                    b.HasIndex("SeriesId");
-
-                    b.ToTable("ElencoSerie");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -143,21 +98,6 @@ namespace RecommendAPI.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("PostTag", b =>
-                {
-                    b.Property<int>("PostsPostId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TagsTagId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("PostsPostId", "TagsTagId");
-
-                    b.HasIndex("TagsTagId");
-
-                    b.ToTable("PostTag");
                 });
 
             modelBuilder.Entity("RecommendAPI.Entities.AppRole", b =>
@@ -317,6 +257,39 @@ namespace RecommendAPI.Migrations
                     b.ToTable("Autores");
                 });
 
+            modelBuilder.Entity("RecommendAPI.Entities.Avaliacao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AvaliadoPorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AvaliadoPorUsername")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Comentario")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DataAvaliacao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MidiaAvaliadaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Nota")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AvaliadoPorId");
+
+                    b.HasIndex("MidiaAvaliadaId");
+
+                    b.ToTable("Avaliacoes");
+                });
+
             modelBuilder.Entity("RecommendAPI.Entities.Connection", b =>
                 {
                     b.Property<string>("ConnectionId")
@@ -373,6 +346,25 @@ namespace RecommendAPI.Migrations
                     b.ToTable("Groups");
                 });
 
+            modelBuilder.Entity("RecommendAPI.Entities.Integrante", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("MidiaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MidiaId");
+
+                    b.ToTable("Integrante");
+                });
+
             modelBuilder.Entity("RecommendAPI.Entities.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -424,6 +416,9 @@ namespace RecommendAPI.Migrations
                     b.Property<int>("Ano")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Avaliado")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("Criado")
                         .HasColumnType("TEXT");
 
@@ -458,6 +453,30 @@ namespace RecommendAPI.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Midia");
                 });
 
+            modelBuilder.Entity("RecommendAPI.Entities.MidiaLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LikeData")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MidiaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MidiaId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Midialikes");
+                });
+
             modelBuilder.Entity("RecommendAPI.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -483,38 +502,6 @@ namespace RecommendAPI.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("RecommendAPI.Entities.Post", b =>
-                {
-                    b.Property<int>("PostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("PostId");
-
-                    b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("RecommendAPI.Entities.Tag", b =>
-                {
-                    b.Property<int>("TagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("TagId");
-
-                    b.ToTable("Tags");
-                });
-
             modelBuilder.Entity("RecommendAPI.Entities.UserLike", b =>
                 {
                     b.Property<int>("SourceUserId")
@@ -537,6 +524,17 @@ namespace RecommendAPI.Migrations
                     b.Property<string>("Diretor")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ElencoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("IntegranteId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Filme_IntegranteId");
+
+                    b.HasIndex("ElencoId");
+
+                    b.HasIndex("IntegranteId");
+
                     b.HasDiscriminator().HasValue("Filme");
                 });
 
@@ -544,10 +542,20 @@ namespace RecommendAPI.Migrations
                 {
                     b.HasBaseType("RecommendAPI.Entities.Midia");
 
+                    b.Property<int?>("AutorId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("EditoraId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("IntegranteId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("AutorId");
+
                     b.HasIndex("EditoraId");
+
+                    b.HasIndex("IntegranteId");
 
                     b.HasDiscriminator().HasValue("Livro");
                 });
@@ -560,55 +568,22 @@ namespace RecommendAPI.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("Serie_Diretor");
 
+                    b.Property<int?>("ElencoId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Serie_ElencoId");
+
+                    b.Property<int?>("IntegranteId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Serie_IntegranteId");
+
                     b.Property<int>("Temporadas")
                         .HasColumnType("INTEGER");
 
+                    b.HasIndex("ElencoId");
+
+                    b.HasIndex("IntegranteId");
+
                     b.HasDiscriminator().HasValue("Serie");
-                });
-
-            modelBuilder.Entity("AutorLivro", b =>
-                {
-                    b.HasOne("RecommendAPI.Entities.Autor", null)
-                        .WithMany()
-                        .HasForeignKey("AutoresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RecommendAPI.Entities.Livro", null)
-                        .WithMany()
-                        .HasForeignKey("LivrosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ElencoFilme", b =>
-                {
-                    b.HasOne("RecommendAPI.Entities.Elenco", null)
-                        .WithMany()
-                        .HasForeignKey("ElencosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RecommendAPI.Entities.Filme", null)
-                        .WithMany()
-                        .HasForeignKey("FilmesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ElencoSerie", b =>
-                {
-                    b.HasOne("RecommendAPI.Entities.Elenco", null)
-                        .WithMany()
-                        .HasForeignKey("ElencosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RecommendAPI.Entities.Serie", null)
-                        .WithMany()
-                        .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -647,21 +622,6 @@ namespace RecommendAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PostTag", b =>
-                {
-                    b.HasOne("RecommendAPI.Entities.Post", null)
-                        .WithMany()
-                        .HasForeignKey("PostsPostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RecommendAPI.Entities.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsTagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("RecommendAPI.Entities.AppUserRole", b =>
                 {
                     b.HasOne("RecommendAPI.Entities.AppRole", "Role")
@@ -681,12 +641,36 @@ namespace RecommendAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("RecommendAPI.Entities.Avaliacao", b =>
+                {
+                    b.HasOne("RecommendAPI.Entities.AppUser", "AvaliadoPor")
+                        .WithMany()
+                        .HasForeignKey("AvaliadoPorId");
+
+                    b.HasOne("RecommendAPI.Entities.Midia", "MidiaAvaliada")
+                        .WithMany()
+                        .HasForeignKey("MidiaAvaliadaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AvaliadoPor");
+
+                    b.Navigation("MidiaAvaliada");
+                });
+
             modelBuilder.Entity("RecommendAPI.Entities.Connection", b =>
                 {
                     b.HasOne("RecommendAPI.Entities.Group", null)
                         .WithMany("Connections")
                         .HasForeignKey("GroupName")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.Integrante", b =>
+                {
+                    b.HasOne("RecommendAPI.Entities.Midia", null)
+                        .WithMany("Integrantes")
+                        .HasForeignKey("MidiaId");
                 });
 
             modelBuilder.Entity("RecommendAPI.Entities.Message", b =>
@@ -713,6 +697,25 @@ namespace RecommendAPI.Migrations
                     b.HasOne("RecommendAPI.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.MidiaLike", b =>
+                {
+                    b.HasOne("RecommendAPI.Entities.Midia", "Midida")
+                        .WithMany()
+                        .HasForeignKey("MidiaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RecommendAPI.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Midida");
 
                     b.Navigation("User");
                 });
@@ -747,13 +750,43 @@ namespace RecommendAPI.Migrations
                     b.Navigation("SourceUser");
                 });
 
+            modelBuilder.Entity("RecommendAPI.Entities.Filme", b =>
+                {
+                    b.HasOne("RecommendAPI.Entities.Elenco", null)
+                        .WithMany("Filmes")
+                        .HasForeignKey("ElencoId");
+
+                    b.HasOne("RecommendAPI.Entities.Integrante", null)
+                        .WithMany("Filmes")
+                        .HasForeignKey("IntegranteId");
+                });
+
             modelBuilder.Entity("RecommendAPI.Entities.Livro", b =>
                 {
+                    b.HasOne("RecommendAPI.Entities.Autor", null)
+                        .WithMany("Livros")
+                        .HasForeignKey("AutorId");
+
                     b.HasOne("RecommendAPI.Entities.Editora", "Editora")
                         .WithMany()
                         .HasForeignKey("EditoraId");
 
+                    b.HasOne("RecommendAPI.Entities.Integrante", null)
+                        .WithMany("Livros")
+                        .HasForeignKey("IntegranteId");
+
                     b.Navigation("Editora");
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.Serie", b =>
+                {
+                    b.HasOne("RecommendAPI.Entities.Elenco", null)
+                        .WithMany("Series")
+                        .HasForeignKey("ElencoId");
+
+                    b.HasOne("RecommendAPI.Entities.Integrante", null)
+                        .WithMany("Series")
+                        .HasForeignKey("IntegranteId");
                 });
 
             modelBuilder.Entity("RecommendAPI.Entities.AppRole", b =>
@@ -776,9 +809,35 @@ namespace RecommendAPI.Migrations
                     b.Navigation("UserRoles");
                 });
 
+            modelBuilder.Entity("RecommendAPI.Entities.Autor", b =>
+                {
+                    b.Navigation("Livros");
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.Elenco", b =>
+                {
+                    b.Navigation("Filmes");
+
+                    b.Navigation("Series");
+                });
+
             modelBuilder.Entity("RecommendAPI.Entities.Group", b =>
                 {
                     b.Navigation("Connections");
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.Integrante", b =>
+                {
+                    b.Navigation("Filmes");
+
+                    b.Navigation("Livros");
+
+                    b.Navigation("Series");
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.Midia", b =>
+                {
+                    b.Navigation("Integrantes");
                 });
 #pragma warning restore 612, 618
         }

@@ -23,19 +23,20 @@ namespace RecommendAPI.Helpers
                 .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src =>
                     src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<MessageDto, Message>();
-            CreateMap<SerieDto, Serie>();
-
-            CreateMap<Serie, SerieDto>();
-            //.ForMember(dest => dest.ElencosDto, opt => opt.MapFrom (src => new Elenco { Nome = src.Elencos.}));
-            CreateMap<FilmeDto, Filme>();
-            CreateMap<Filme, FilmeDto>();
-            CreateMap<LivroDto, Livro>()
-                .ForMember(dest => dest.Editora, opt => opt.MapFrom(src => new Editora { Nome = src.Editora }));
-            CreateMap<Livro, LivroDto>()
-                .ForMember(dest => dest.Editora, opt => opt.MapFrom(src => src.Editora.Nome));
-
             CreateMap<Midia, MidiaDto>()
-             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.UserName));
+             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.UserName))
+             .ForMember(dest => dest.Integrantes, opt => opt.MapFrom(src => src.Integrantes));
+            CreateMap<MidiaDto, Midia>()
+            .ForMember(dest => dest.Integrantes, opt => opt.MapFrom(src => src.Integrantes));
+
+             CreateMap<Avaliacao, AvaliacaoDto>()
+            .ForMember(dest => dest.AvaliadoPorUsername, opt => opt.MapFrom(src => src.AvaliadoPor.UserName))
+            .ForMember(dest => dest.AvaliadoPorNome, opt => opt.MapFrom(src => src.AvaliadoPor.Name))
+            .ForMember(dest => dest.MidiaAvaliadaId, opt => opt.MapFrom(src => src.MidiaAvaliada.Id))
+            .ForMember(dest => dest.MidiaTitulo, opt => opt.MapFrom(src => src.MidiaAvaliada.Titulo));
+
+             CreateMap<AvaliacaoDto, Avaliacao>();
+           
 
 
 

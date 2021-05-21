@@ -7,7 +7,6 @@ namespace RecommendAPI.Entities
     {
         public string Diretor { get; set; }
         public int Temporadas { get; set; }
-
-        public ICollection<Elenco> Elencos { get; set; } = new List<Elenco>();
+      
     }
 }

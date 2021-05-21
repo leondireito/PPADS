@@ -9,16 +9,8 @@ namespace RecommendAPI.Interfaces
     public interface IMidiaRepository
     {
         void AddMedia(IMidia midia);
-
-        IEnumerable<IMidia> GetAllMidias();
-
         Task<PagedList<MidiaDto>> GetMidiassAsync(UserParams userParams);
-        IEnumerable<Serie> GetSeries();
-        IEnumerable<Filme> GetFilmes();
-        IEnumerable<Livro> GetLivros();
+        Task<MidiaDto> GetMidiaAsync(int id);
 
-
-
-        IEnumerable<Post> GetPosts();
     }
 }
