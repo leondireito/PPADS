@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,7 +13,6 @@ import { RegisterComponent } from './register/register.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { ListsComponent } from './lists/lists.component';
-import { MessagesComponent } from './messages/messages.component';
 import { SharedModule } from './_modules/shared.module';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
@@ -40,6 +40,10 @@ import { MidiaAddMovieComponent } from './midia/midia-add-movie/midia-add-movie.
 import { MidiaAddBookComponent } from './midia/midia-add-book/midia-add-book.component';
 import { MidiaConteudoComponent } from './midia/midia-conteudo/midia-conteudo.component';
 import { MidiaCardComponent } from './midia/midia-card/midia-card.component';
+import { MidiaDetailComponent } from './midia/midia-detail/midia-detail.component';
+import { MidiaParticipanteComponent } from './midia/midia-participante/midia-participante.component';
+import { MidiaPhotoComponent } from './midia/midia-photo/midia-photo.component';
+import { MidiaAvaliacaoComponent } from './midia/midia-avaliacao/midia-avaliacao.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,6 @@ import { MidiaCardComponent } from './midia/midia-card/midia-card.component';
     MemberListComponent,
     MemberDetailComponent,
     ListsComponent,
-    MessagesComponent,
     TestErrorsComponent,
     NotFoundComponent,
     ServerErrorComponent,
@@ -72,7 +75,12 @@ import { MidiaCardComponent } from './midia/midia-card/midia-card.component';
     MidiaAddMovieComponent,
     MidiaAddBookComponent,
     MidiaConteudoComponent,
-    MidiaCardComponent
+    MidiaCardComponent,
+    MidiaDetailComponent,
+    MidiaParticipanteComponent,
+    MidiaPhotoComponent,
+    MidiaAvaliacaoComponent
+  
   ],
   imports: [
     BrowserModule,
@@ -83,6 +91,7 @@ import { MidiaCardComponent } from './midia/midia-card/midia-card.component';
     ReactiveFormsModule,
     SharedModule,
     NgxSpinnerModule,
+    NgxSliderModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

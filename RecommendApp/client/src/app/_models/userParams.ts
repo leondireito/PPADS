@@ -6,8 +6,12 @@ export class UserParams {
     maxAge = 99;
     pageNumber = 1;
     pageSize = 7;
-    username:string
+    username:string;
+    name:string;
+    midiaTitulo:string = '';
+    midiaTipo:string ='3';
     orderBy = 'lastActive';
+    avaliado = 'true';
 
     constructor(user: User) {
         this.gender = user.gender === 'female' ? 'male' : 'female';

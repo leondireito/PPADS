@@ -4,7 +4,6 @@ import { Member } from 'src/app/_models/member';
 import { Midia } from 'src/app/_models/midia';
 import { MembersService } from 'src/app/_services/members.service';
 import { MidiaService } from 'src/app/_services/midia.service';
-import { PresenceService } from 'src/app/_services/presence.service';
 
 
 @Component({
@@ -16,8 +15,7 @@ export class MidiaCardComponent implements OnInit {
 
   @Input() midia: Midia;
 
-  constructor(private midiaService: MidiaService, memberService: MembersService,private toastr: ToastrService, 
-    public presence: PresenceService) { }
+  constructor(private midiaService: MidiaService, memberService: MembersService,private toastr: ToastrService ) { }
 
   ngOnInit(): void {
   }

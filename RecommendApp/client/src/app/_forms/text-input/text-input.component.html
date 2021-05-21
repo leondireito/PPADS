@@ -5,7 +5,7 @@
         class="form-control" 
         [formControl]="ngControl.control"
         placeholder={{label}}>
-    <div *ngIf="ngControl.control.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
+    <div *ngIf="ngControl.control.errors?.required" class="invalid-feedback">Por favor preencha {{label}}</div>
     <div *ngIf="ngControl.control.errors?.minlength" class="invalid-feedback">
         {{label}} must be at least {{ngControl.control.errors.minlength['requiredLength']}}
     </div>

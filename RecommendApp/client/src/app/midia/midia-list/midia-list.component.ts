@@ -9,6 +9,7 @@ import { take } from 'rxjs/operators';
 import { User } from 'src/app/_models/user';
 import { Midia } from 'src/app/_models/midia';
 import { MidiaService } from 'src/app/_services/midia.service';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-midia-list',
@@ -16,12 +17,15 @@ import { MidiaService } from 'src/app/_services/midia.service';
   styleUrls: ['./midia-list.component.css']
 })
 export class MidiaListComponent implements OnInit {
-
+  @Input() isAdmin: boolean;
   members: Member[];
   midias: Midia[];
   pagination: Pagination;
   userParams: UserParams;
   user: User;
+
+  mdiaTipoList = [{ value: '0', display: 'Filmes' }, { value: '1', display: 'Seriados' }, 
+  { value: '2', display: 'Livros' }];
   
 
   constructor(private midiaService: MidiaService, private memberService: MembersService) {
@@ -33,12 +37,20 @@ export class MidiaListComponent implements OnInit {
   }
 
   loadMidias() {
+
+    console.log(this.userParams);
+
+    if(this.isAdmin)
+      this.userParams.avaliado = 'false';
+    else
+    this.userParams.avaliado = 'true';
+
     this.memberService.setUserParams(this.userParams);
     this.midiaService.getMidias(this.userParams).subscribe(response => {
       this.midias = response.result;
       this.pagination = response.pagination;
 
-      console.log(this.midias);
+      
     })
 
    

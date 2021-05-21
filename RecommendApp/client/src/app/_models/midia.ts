@@ -1,5 +1,8 @@
+import { Integrante } from "./integrante.";
+
+
 export interface Midia {
-    id: number;
+    id: string;
     username:string;
     titulo: string;
     photoUrl: string;
@@ -8,4 +11,6 @@ export interface Midia {
     tipo: number;
     lancamento:Date;
     likes:number;
+    avaliado: boolean;
+    integrantes: Integrante[];
 }

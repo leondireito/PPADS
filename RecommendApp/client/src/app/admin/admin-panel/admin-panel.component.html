@@ -6,9 +6,9 @@
                 <app-user-management></app-user-management>
             </div>
         </tab>
-        <tab heading='Photo management' *appHasRole='["Admin", "Moderator"]'>
+        <tab heading='Avaliar mdias' *appHasRole='["Admin", "Moderator"]'>
             <div class="container">
-                <app-photo-management></app-photo-management>
+                <app-midia-list [isAdmin] = 'true'></app-midia-list>
             </div>
         </tab>
     </tabset>

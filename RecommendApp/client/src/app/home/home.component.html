@@ -17,11 +17,27 @@
         </div>
 
     </div>
-
-    <h1 *ngIf="(accountService.currentUser$ | async) as user">
-        Ola {{user.knownAs || user.username | titlecase}}
-    </h1>
-
-
-
+    <div *ngIf="(accountService.currentUser$ | async) as user">
+        <h1>Ola {{user.knownAs || user.username | titlecase}}    </h1>
+            <div class="mt-5" style="margin:0 30px;">
+                <h3>Suas avaliações</h3>
+                <table class="table">
+                    <tr>
+                        <th >Midia</th>
+                        <th class="col-4">comentario</th>
+                        <th>Data</th>
+                        <th class="col-3" nowrap="nowrap">Avalidado por</th>
+                        <th>Nota</th>
+                    </tr>
+                    <tr *ngFor="let avalia of avaliacaoList; index as i">
+                        <td >
+                            {{ avalia.midiaTitulo }}</td>
+                        <td class="col-4">{{ avalia.comentario }}</td>
+                        <td>{{ avalia.dataAvaliacao | date: 'dd/MM/yyyy' }}</td>
+                        <td class="col-3" nowrap="nowrap">{{ avalia.avaliadoPorUsername }}</td>
+                        <td>{{ avalia.nota }}</td>
+                    </tr>
+                </table>
+            </div>
+    </div>
 </div>

@@ -1,17 +1,35 @@
+<hr>
 <form [formGroup]='registerForm' (ngSubmit)="registerForm.valid && addMidia()" autocomplete="off">
 
-    <div class="col-10">
+    <div class="row col-12">
+        <div class="col-6">
+            <app-text-input [formControl]='registerForm.controls["titulo"]' [label]='"Titulo"'></app-text-input>
+            <app-text-input [formControl]='registerForm.controls["diretor"]' [label]='"Diretor"'></app-text-input>
+            <app-text-input [formControl]='registerForm.controls["temporadas"]' [label]='"Temporadas"'>
+            </app-text-input>
+            <app-text-input [formControl]='registerForm.controls["ano"]' [label]='"Lançamento (ano)"'>
+            </app-text-input>
+            <app-text-input [formControl]='registerForm.controls["pais"]' [label]='"Pais"'></app-text-input>
+        </div>
+        <div class="col-6">
 
-        <hr>
+            <!-- <app-midia-photo [photoUrl]="photoUrl"></app-midia-photo> -->
 
+            <h6>Adiocione o elenco</h6>
+            <div formArrayName="integrantes"
+                *ngFor="let item of registerForm.get('integrantes')['controls']; let i = index;">
+                <div [formGroupName]="i" class="form-group">
 
-        <app-text-input [formControl]='registerForm.controls["titulo"]' [label]='"Titulo"'></app-text-input>
-        <app-text-input [formControl]='registerForm.controls["diretor"]' [label]='"Diretor"'></app-text-input>
+                    <input formControlName="nome" placeholder="Nome">
+                    <button (click)="removeElemento(i)">Remove</button>
 
-        <app-text-input [formControl]='registerForm.controls["temporadas"]' [label]='"Temporadas"'></app-text-input>
-        <app-text-input [formControl]='registerForm.controls["ano"]' [label]='"Lançamento (ano)"'></app-text-input>
-        <app-text-input [formControl]='registerForm.controls["pais"]' [label]='"Pais"'></app-text-input>
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <button type="button" (click)="addElemento()">Adiciona Elenco</button>
+            </div>
 
+        </div>
 
         <div class="row" *ngIf="validationErrors.length > 0">
             <ul class="text-danger">
@@ -22,8 +40,10 @@
         </div>
 
         <div class="form-group text-center">
-            <button [disabled]='!registerForm.valid' class="btn btn-success mr-2" type="submit">Adicionar Série</button>
+            <button [disabled]='!registerForm.valid' class="btn btn-success mr-2" type="submit">Adicionar
+                Série</button>
             <button class="btn btn-default mr-2" (click)="cancel()" type="button">Cancelar</button>
         </div>
+
     </div>
-</form> 
+</form>

@@ -13,6 +13,7 @@ import { Serie } from '../_models/serie';
 import { Filme } from '../_models/filme';
 import { Livro } from '../_models/livro';
 import { Midia } from '../_models/midia';
+import { Avaliacao } from '../_models/avaliacao';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,9 @@ export class MidiaService {
   user: User;
   userParams: UserParams;
   serie: Serie;
-  filme:Filme;
-  livro:Livro;
-  midia:Midia;
+  filme: Filme;
+  livro: Livro;
+  midia: Midia;
 
   constructor(private http: HttpClient, private accountService: AccountService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
@@ -43,7 +44,7 @@ export class MidiaService {
 
     return this.http.post(this.baseUrl + 'midia/addserie', serie).pipe(
       map(() => {
-       this.serie = serie;
+        this.serie = serie;
       })
     )
   }
@@ -55,12 +56,12 @@ export class MidiaService {
 
     return this.http.post(this.baseUrl + 'midia/addfilme', filme).pipe(
       map(() => {
-       this.filme = filme;
+        this.filme = filme;
       })
     )
   }
 
-  
+
   setLivro(livro: Livro) {
 
     livro.username = this.user.username;
@@ -68,7 +69,7 @@ export class MidiaService {
 
     return this.http.post(this.baseUrl + 'midia/addlivro', livro).pipe(
       map(() => {
-       this.livro = livro;
+        this.livro = livro;
       })
     )
   }
@@ -88,14 +89,13 @@ export class MidiaService {
 
   getMidias(userParams: UserParams) {
 
-    console.log("aqui");
-
-   
     let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
-    
     params = params.append('username', userParams.username);
     params = params.append('orderBy', userParams.orderBy);
+    params = params.append('midiaTipo', userParams.midiaTipo);
+    params = params.append('midiaTitulo', userParams.midiaTitulo);
+    params = params.append('avaliado', userParams.avaliado);
 
     return getPaginatedResult<Midia[]>(this.baseUrl + 'midia/getmidias', params, this.http)
       .pipe(map(response => {
@@ -104,8 +104,36 @@ export class MidiaService {
       }))
   }
 
+  getMidia(id: string) {
+    return this.http.get<Midia>(this.baseUrl + 'midia/' + id);
+  }
+
+  setPhoto(id: number) {
+
+  }
+
+  getAvaliacoes(id:string){
+    return this.http.get<Partial<Avaliacao[]>>(this.baseUrl + 'avalia/' + id);
+  }
+
+  getAvaliacoesMembro(username:string){
+    return this.http.get<Partial<Avaliacao[]>>(this.baseUrl + 'avalia/Getavaliacoesmembros/' + username);
+  }
+
+  addAvaliacao(avaliacao: Avaliacao) {
+    return this.http.post(this.baseUrl + 'avalia/addavaliacao', avaliacao).pipe(
+      map(() => {
+      
+      })
+    )
+  }
+
   addLike(username: string) {
     return this.http.post(this.baseUrl + 'midia/likes' + username, {})
+  }
+
+  aprovar(id:string){
+    return this.http.post(this.baseUrl + 'midia/aprovar/' + id, {})
   }
 
 }

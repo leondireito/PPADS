@@ -4,7 +4,6 @@ import { HomeComponent } from './home/home.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { ListsComponent } from './lists/lists.component';
-import { MessagesComponent } from './messages/messages.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
@@ -18,6 +17,8 @@ import { MemberAddComponent } from './members/member-add/member-add.component';
 import { MidiaAddSerieComponent } from './midia/midia-add-serie/midia-add-serie.component';
 import { MidiaListComponent } from './midia/midia-list/midia-list.component';
 import { MidiaConteudoComponent } from './midia/midia-conteudo/midia-conteudo.component';
+import { MidiaDetailComponent } from './midia/midia-detail/midia-detail.component';
+import { MidiaDetailedResolver } from './_resolvers/midia-detailed-resolver';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -32,9 +33,9 @@ const routes: Routes = [
       {path: 'lists', component: ListsComponent},
       {path: 'midias', component: MidiaListComponent},
       {path: 'novoconteudo', component: MidiaConteudoComponent},
-      {path: 'messages', component: MessagesComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
       {path: 'member/add', component: MemberAddComponent, canActivate: [AdminGuard]},
+      {path: 'midia/:id', component: MidiaDetailComponent, resolve: {midia: MidiaDetailedResolver}},
      
     ]
   },

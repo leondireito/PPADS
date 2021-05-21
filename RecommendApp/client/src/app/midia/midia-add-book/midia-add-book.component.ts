@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MidiaService } from 'src/app/_services/midia.service';
@@ -16,6 +16,7 @@ export class MidiaAddBookComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
   registerForm: FormGroup;
   validationErrors: string[] = [];
+  integrantes: FormArray;
 
   
   constructor(private midiaService: MidiaService, private toastr: ToastrService, 
@@ -31,7 +32,23 @@ export class MidiaAddBookComponent implements OnInit {
       titulo: ['', Validators.required],
       pais: ['', Validators.required],
       ano: ['', Validators.required],
+      integrantes: this.fb.array([ this.crialemento() ])
     })
+  }
+
+  crialemento(): FormGroup {
+    return this.fb.group({
+      nome: '',
+    });
+  }
+
+  addElemento(): void {
+    this.integrantes = this.registerForm.get('integrantes') as FormArray;
+    this.integrantes.push(this.crialemento());
+  }
+
+  removeElemento(i:number) {
+    this.integrantes.removeAt(i);
   }
 
   addMidia() {
