@@ -36,6 +36,9 @@ namespace RecommendAPI.Helpers
             .ForMember(dest => dest.MidiaTitulo, opt => opt.MapFrom(src => src.MidiaAvaliada.Titulo));
 
              CreateMap<AvaliacaoDto, Avaliacao>();
+              CreateMap<Relacionamento, RelacionamentoDto>()
+              .ForMember(dest => dest.UserConvida, opt => opt.MapFrom(src => src.UserConvida.UserName))
+              .ForMember(dest => dest.UserConvidado, opt => opt.MapFrom(src => src.UserConvidado.UserName));
            
 
 

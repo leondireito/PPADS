@@ -19,25 +19,92 @@
     </div>
     <div *ngIf="(accountService.currentUser$ | async) as user">
         <h1>Ola {{user.knownAs || user.username | titlecase}}    </h1>
-            <div class="mt-5" style="margin:0 30px;">
-                <h3>Suas avaliações</h3>
-                <table class="table">
-                    <tr>
-                        <th >Midia</th>
-                        <th class="col-4">comentario</th>
-                        <th>Data</th>
-                        <th class="col-3" nowrap="nowrap">Avalidado por</th>
-                        <th>Nota</th>
-                    </tr>
-                    <tr *ngFor="let avalia of avaliacaoList; index as i">
-                        <td >
-                            {{ avalia.midiaTitulo }}</td>
-                        <td class="col-4">{{ avalia.comentario }}</td>
-                        <td>{{ avalia.dataAvaliacao | date: 'dd/MM/yyyy' }}</td>
-                        <td class="col-3" nowrap="nowrap">{{ avalia.avaliadoPorUsername }}</td>
-                        <td>{{ avalia.nota }}</td>
-                    </tr>
-                </table>
-            </div>
+
+        <div class="col-8">
+            <tabset class="member-tabset" >
+                <tab heading='Avaliações'>
+                   
+                    <div class="mt-5" style="margin:0 30px;">
+                        <table class="table">
+                            <tr>
+                                <th >Nome</th>
+                                <th class="col-4">comentario</th>
+                                <th>Data</th>
+                                <th>Nota</th>
+                            </tr>
+                            <tr *ngFor="let avalia of avaliacaoList; index as i">
+                                <td >
+                                    {{ avalia.midiaTitulo }}</td>
+                                <td class="col-4">{{ avalia.comentario }}</td>
+                                <td>{{ avalia.dataAvaliacao | date: 'dd/MM/yyyy' }}</td>
+                                <td>{{ avalia.nota }}</td>
+                            </tr>
+                        </table>
+                    </div>
+    
+                </tab>
+                <tab heading='Convites' >
+                    <h4>Aguardando meus convites</h4>
+                    <div class="mt-3" style="margin:0 30px;">
+                        <table class="table">
+                            <tr>
+                                <th >Nome</th>
+                                <th>Em</th>
+                               
+                            </tr>
+                            <tr *ngFor="let rela of convitesList; index as i">
+                                <td > {{ rela.userConvidado }}</td>
+                                <td>{{ rela.dataProposta | date: 'dd/MM/yyyy' }}</td>
+                               
+                            </tr>
+                        </table>
+                    </div>
+
+                    <h4>Me convidou</h4>
+                    <div class="mt-3" style="margin:0 30px;">
+                        <table class="table">
+                            <tr>
+                                <th >Nome</th>
+                                <th>Em</th>
+                                <th></th>
+                            </tr>
+                            <tr *ngFor="let invite of invitesList; index as i">
+                                <td > {{ invite.userConvida }}</td>
+                                <td>{{ invite.dataProposta | date: 'dd/MM/yyyy' }}</td>
+                                <td ><button (click)="aceitar(invite)"  class="btn btn-primary btn-sm">Aceitar</button>
+                                    <button (click)="recusar(invite)"  class="ml-1 btn btn-secondary btn-sm">Recusar</button>
+                                </td>
+                               
+                            </tr>
+                        </table>
+                    </div>
+                   
+                </tab>
+                <tab heading='Relacionamentos' >
+                    <div class="mt-3" style="margin:0 30px;">
+                        <table class="table">
+                            <tr>
+                                <th >Nome</th>
+                                <th>Em</th>
+                                <th></th>
+                            </tr>
+                            <tr *ngFor="let relacio of relationamentos; index as i">
+                                <td > {{ relacio.userConvida }}</td>
+                                <td>{{ relacio.dataProposta | date: 'dd/MM/yyyy' }}</td>
+                                <td >
+    userConvida: string;
+                                    <button routerLink='/members/{{relacio.userConvidado}}'
+                                     class="btn btn-primary">Visitar</button>
+                                  
+                                </td>
+                               
+                            </tr>
+                        </table>
+                    </div>
+                </tab>
+              
+            </tabset>
+        </div>
+            
     </div>
 </div>

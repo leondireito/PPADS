@@ -7,7 +7,7 @@ using RecommendAPI.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
-
+using System.Collections.Generic;
 
 namespace RecommendAPI.Controllers
 {
@@ -103,9 +103,12 @@ namespace RecommendAPI.Controllers
             Response.AddPaginationHeader(midias.CurrentPage, midias.PageSize,
                 midias.TotalCount, midias.TotalPages);
 
+            
+
             return Ok(midias);
         }
 
+      
         [HttpGet("getmidiasadm/{userParams}")]
         public async Task<ActionResult<MidiaDto>> GetMidiasAdm([FromQuery] UserParams userParams)
         {
@@ -125,6 +128,26 @@ namespace RecommendAPI.Controllers
             var midia = await unitOfWork.MidiaRepository.GetMidiaAsync(id);
 
             return Ok(midia);
+        }
+
+        [HttpGet("aprovamidia/{id}")]
+        public async Task<ActionResult<bool>> AprovaMidia(int id)
+        {
+            unitOfWork.MidiaRepository.AprovaMidia(id);
+
+            if (await unitOfWork.Complete())
+            {
+                return Ok(true);
+            }
+
+            return BadRequest("Problema ao aprovar Midia");
+        }
+
+        [HttpGet("MidiaDuplicadaAsync/{titulo}")]
+        private async Task<IList<MidiaDto>> MidiaDuplicadaAsync(string titulo)
+        {
+            return await unitOfWork.MidiaRepository.VeridicaMidiaDuplicada(titulo);
+
         }
 
     }

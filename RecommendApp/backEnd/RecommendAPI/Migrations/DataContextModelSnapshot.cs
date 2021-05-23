@@ -502,6 +502,33 @@ namespace RecommendAPI.Migrations
                     b.ToTable("Photos");
                 });
 
+            modelBuilder.Entity("RecommendAPI.Entities.Relacionamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DataProposta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserConvidaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserConvidadoId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserConvidaId");
+
+                    b.HasIndex("UserConvidadoId");
+
+                    b.ToTable("Relacionamentos");
+                });
+
             modelBuilder.Entity("RecommendAPI.Entities.UserLike", b =>
                 {
                     b.Property<int>("SourceUserId")
@@ -729,6 +756,25 @@ namespace RecommendAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.Relacionamento", b =>
+                {
+                    b.HasOne("RecommendAPI.Entities.AppUser", "UserConvida")
+                        .WithMany()
+                        .HasForeignKey("UserConvidaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RecommendAPI.Entities.AppUser", "UserConvidado")
+                        .WithMany()
+                        .HasForeignKey("UserConvidadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserConvida");
+
+                    b.Navigation("UserConvidado");
                 });
 
             modelBuilder.Entity("RecommendAPI.Entities.UserLike", b =>

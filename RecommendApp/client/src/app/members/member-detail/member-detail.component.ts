@@ -9,6 +9,9 @@ import { Message } from 'src/app/_models/message';
 import { AccountService } from 'src/app/_services/account.service';
 import { User } from 'src/app/_models/user';
 import { take } from 'rxjs/operators';
+import { Avaliacao } from 'src/app/_models/avaliacao';
+import { MidiaService } from 'src/app/_services/midia.service';
+import { RelacionamentoService } from 'src/app/_services/relacionamento.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -23,9 +26,12 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   activeTab: TabDirective;
   messages: Message[] = [];
   user: User;
+  avaliacaoList: Avaliacao [];
 
   constructor( private route: ActivatedRoute, 
      private accountService: AccountService,
+     private midiaService:MidiaService,
+     private relacionamentoService:RelacionamentoService,
     private router: Router) { 
       this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -52,6 +58,21 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     ]
 
     this.galleryImages = this.getImages();
+    this.getAvaliacoes();
+  }
+
+  getAvaliacoes(){
+    this.midiaService.getAvaliacoesMembro(this.member.username).subscribe(response => {
+      this.avaliacaoList = response;
+     
+    })
+  }
+
+  proporRealacionamento(){
+  
+  this.relacionamentoService.propor(this.user.username,this.member.username).subscribe(response => {
+          
+   })
   }
 
   getImages(): NgxGalleryImage[] {

@@ -8,6 +8,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using RecommendAPI.Entities.Enums;
+using System.Collections.Generic;
 
 namespace RecommendAPI.Data
 {
@@ -24,6 +25,7 @@ namespace RecommendAPI.Data
 
         public void AddMedia(IMidia midia)
         {
+
             if (midia is Serie)
                 context.Series.Add(midia as Serie);
             else if (midia is Filme)
@@ -55,6 +57,22 @@ namespace RecommendAPI.Data
             return await PagedList<MidiaDto>.CreateAsync(query.ProjectTo<MidiaDto>(mapper
                 .ConfigurationProvider).AsNoTracking(),
                     userParams.PageNumber, userParams.PageSize);
+        }
+
+       
+
+        public async Task<IList<MidiaDto>> VeridicaMidiaDuplicada(string titulo)
+        {
+            var query = context.Midias.Include(p => p.User).AsQueryable();
+            query = query.Where(x => x.Titulo == titulo);
+
+            var midias = await query.ToListAsync();
+
+            var midiasDto = new List<MidiaDto>();
+
+            mapper.Map(midias, midiasDto);
+
+            return midiasDto;
         }
 
         public async Task<MidiaDto> GetMidiaAsync(int id)
@@ -90,6 +108,50 @@ namespace RecommendAPI.Data
 
             return midiaDto;
         }
+
+        private async Task<IMidia> GetMidiaIncludesPorTipo(MidiaTypeEnum tipo, int id)
+        {
+
+            IMidia midia = null;
+
+            if (tipo == MidiaTypeEnum.Serie)
+            {
+                midia = await context.Series
+                .Include(x => x.User)
+                .Include(x => x.Integrantes)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            }
+            else if (tipo == MidiaTypeEnum.Filme)
+            {
+                midia = await context.Filmes
+                .Include(x => x.User)
+                .Include(x => x.Integrantes)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            }
+            else if (tipo == MidiaTypeEnum.Livro)
+            {
+                midia = await context.Livros
+                .Include(x => x.User)
+                .Include(x => x.Integrantes)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            }
+
+            return midia;
+        }
+
+        public void AprovaMidia(int id)
+        {
+            var m = context.Midias.Find(id);
+            m.Avaliado = true;
+            context.Midias.Update(m);
+
+            ;
+        }
+
+
+
+
+
 
 
     }

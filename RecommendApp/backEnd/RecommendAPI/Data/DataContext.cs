@@ -31,6 +31,7 @@ namespace RecommendAPI.Data
         public DbSet<Livro> Livros { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<MidiaLike> Midialikes { get; set; }
+        public DbSet<Relacionamento> Relacionamentos { get; set; }
 
        
 

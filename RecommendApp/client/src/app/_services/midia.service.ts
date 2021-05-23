@@ -116,6 +116,7 @@ export class MidiaService {
     return this.http.get<Partial<Avaliacao[]>>(this.baseUrl + 'avalia/' + id);
   }
 
+  
   getAvaliacoesMembro(username:string){
     return this.http.get<Partial<Avaliacao[]>>(this.baseUrl + 'avalia/Getavaliacoesmembros/' + username);
   }
@@ -128,12 +129,16 @@ export class MidiaService {
     )
   }
 
+  proporRelacionamento(username:string){
+    return this.http.post(this.baseUrl + 'midia/likes' + username, {})
+  }
+
   addLike(username: string) {
     return this.http.post(this.baseUrl + 'midia/likes' + username, {})
   }
 
   aprovar(id:string){
-    return this.http.post(this.baseUrl + 'midia/aprovar/' + id, {})
+    return this.http.get(this.baseUrl + 'midia/aprovamidia/' + id, {})
   }
 
 }

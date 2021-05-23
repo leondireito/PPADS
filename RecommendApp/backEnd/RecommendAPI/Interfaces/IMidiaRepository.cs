@@ -11,6 +11,8 @@ namespace RecommendAPI.Interfaces
         void AddMedia(IMidia midia);
         Task<PagedList<MidiaDto>> GetMidiassAsync(UserParams userParams);
         Task<MidiaDto> GetMidiaAsync(int id);
+        void AprovaMidia(int id);
+         Task<IList<MidiaDto>> VeridicaMidiaDuplicada(string titulo);
 
     }
 }

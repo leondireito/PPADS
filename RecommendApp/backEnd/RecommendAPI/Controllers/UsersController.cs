@@ -134,5 +134,7 @@ namespace RecommendAPI.Controllers
 
             return BadRequest("Failed to delete the photo");
         }
+
+        
     }
 }

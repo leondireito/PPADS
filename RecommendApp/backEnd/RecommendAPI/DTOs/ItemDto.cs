@@ -13,6 +13,7 @@ namespace RecommendAPI.DTOs
         public string Username { get; set; }
         public DateTime Lancamento { get; set; }
         public MidiaTypeEnum Tipo { get; set; }
+         public bool Avaliado { get; set; } 
         public int Likes { get; set; }
     }
 }

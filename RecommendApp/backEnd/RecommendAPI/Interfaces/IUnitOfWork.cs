@@ -9,6 +9,7 @@ namespace RecommendAPI.Interfaces
         ILikesRepository LikesRepository {get; }
         IMidiaRepository  MidiaRepository {get;}
         IAvaliacaoRepository AvaliacaoRepository {get;}
+        IRelacionantoRepository RelacionamentoRepository{get;}
         Task<bool> Complete();
         bool HasChanges();
     }

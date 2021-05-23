@@ -50,7 +50,7 @@ export class MidiaListComponent implements OnInit {
       this.midias = response.result;
       this.pagination = response.pagination;
 
-      
+      console.log(this.midias);
     })
 
    

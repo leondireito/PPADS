@@ -23,7 +23,7 @@
             </div>
             <div class="card-footer">
                 <div class="btn-group d-flex">
-                    <button class="btn btn-primary">Gostei</button>
+                    <button class="btn btn-info" (click)="proporRealacionamento()">Propor relacionamento</button>
                 </div>
             </div>
         </div>
@@ -31,11 +31,26 @@
 
     <div class="col-8">
         <tabset class="member-tabset" #memberTabs>
-            <tab heading='About {{member.knownAs}}' (selectTab)="onTabActivated($event)">
-                <h4>Description</h4>
-                <p>{{member.introduction}}</p>
-                <h4>Looking for</h4>
-                <p>{{member.lookingFor}}</p>
+            <tab heading='Avaliações {{member.knownAs}}' (selectTab)="onTabActivated($event)">
+               
+                <div class="mt-5" style="margin:0 30px;">
+                    <table class="table">
+                        <tr>
+                            <th >Nome</th>
+                            <th class="col-4">comentario</th>
+                            <th>Data</th>
+                            <th>Nota</th>
+                        </tr>
+                        <tr *ngFor="let avalia of avaliacaoList; index as i">
+                            <td >
+                                {{ avalia.midiaTitulo }}</td>
+                            <td class="col-4">{{ avalia.comentario }}</td>
+                            <td>{{ avalia.dataAvaliacao | date: 'dd/MM/yyyy' }}</td>
+                            <td>{{ avalia.nota }}</td>
+                        </tr>
+                    </table>
+                </div>
+
             </tab>
             <tab heading='Interests' (selectTab)="onTabActivated($event)">
                 <h4>Interests</h4>

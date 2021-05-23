@@ -11,6 +11,8 @@ namespace RecommendAPI.DTOs
         public string Diretor { get; set; }
         public int Temporadas { get; set; }
          public string Editora { get; set; }
+
+         public int MidiaExistId { get; set; }
         public ICollection<Integrante> Integrantes { get; set; } = new List<Integrante>();
     }
 }

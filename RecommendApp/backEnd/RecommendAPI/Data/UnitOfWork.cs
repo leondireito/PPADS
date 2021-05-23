@@ -22,6 +22,7 @@ namespace RecommendAPI.Data
         public ILikesRepository LikesRepository => new LikesRepository(_context);
         public IMidiaRepository MidiaRepository => new MidiaRepository(_context, _mapper);
          public IAvaliacaoRepository AvaliacaoRepository => new AvaliacaoRepository(_context, _mapper);
+         public IRelacionantoRepository RelacionamentoRepository => new RelacionamentoRepository(_context, _mapper);
 
         public async Task<bool> Complete()
         {
