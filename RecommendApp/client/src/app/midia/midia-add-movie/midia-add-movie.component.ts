@@ -53,14 +53,15 @@ export class MidiaAddMovieComponent implements OnInit {
 
   addMidia() {
     this.midiaService.setFilme(this.registerForm.value).subscribe(response => {
-      this.router.navigateByUrl('/midias');
+      this.toastr.success('Filme adicionado');
+      this.registerForm.reset();
     }, error => {
       this.validationErrors = error;
     })
   }
 
   cancel() {
-    this.router.navigateByUrl('/midias');
+    this.registerForm.reset();
   }
 
 

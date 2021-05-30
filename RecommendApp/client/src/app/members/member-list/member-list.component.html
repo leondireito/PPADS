@@ -4,7 +4,8 @@
 
 <div class="container mt-3">
     <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadMembers()" autocomplete="off">
-       
+        <input type="text" class="form-control ml-1" style="width: 250px;" name="username" 
+        [(ngModel)]="userParams.username">
         <button class="btn btn-primary ml-1" type="submit">Aplicar Filtro</button>
         <button (click)="resetFilters()" class="btn btn-info ml-1" type="submit">Resetar Filtro</button>
         <div class="col">

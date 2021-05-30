@@ -25,15 +25,18 @@ namespace RecommendAPI.Data
         public DbSet<Editora> Editoras { get; set; }
         public DbSet<Elenco> Elenco { get; set; }
 
-         public DbSet<Midia> Midias { get; set; }
+        public DbSet<Midia> Midias { get; set; }
         public DbSet<Filme> Filmes { get; set; }
         public DbSet<Serie> Series { get; set; }
         public DbSet<Livro> Livros { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<MidiaLike> Midialikes { get; set; }
         public DbSet<Relacionamento> Relacionamentos { get; set; }
+        public DbSet<Comentario> Comentarios { get; set; }
+        public DbSet<AvaliacaolLike> AvaliacaoLikes { get; set; }
 
-       
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -77,10 +80,6 @@ namespace RecommendAPI.Data
                 .WithMany(m => m.MessagesReceived)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Message>()
-                .HasOne(u => u.Sender)
-                .WithMany(m => m.MessagesSent)
-                .OnDelete(DeleteBehavior.Restrict);
 
 
             builder.ApplyUtcDateTimeConverter();

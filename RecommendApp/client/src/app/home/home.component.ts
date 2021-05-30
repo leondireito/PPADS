@@ -10,6 +10,7 @@ import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { RelacionamentoService } from '../_services/relacionamento.service';
 import { Relacionamento } from '../_models/relacionamento';
 import {ActivatedRoute, Router} from '@angular/router';
+import { AvaliaLike } from '../_models/avaliaLike';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit {
   convitesList: Relacionamento[];
   invitesList: Relacionamento[];
   relationamentos: Relacionamento[];
+  userLikes:AvaliaLike[];
 
   constructor(public accountService:AccountService, private route: ActivatedRoute,private router: Router,
     private relacionamentoService: RelacionamentoService,private midiaService: MidiaService
@@ -40,6 +42,7 @@ export class HomeComponent implements OnInit {
    this.getRelacionamentos();
    this.getConvites();
    this.getInvites();
+   this.getAvaliaLikes();
 
 
  
@@ -75,7 +78,28 @@ export class HomeComponent implements OnInit {
 
   getRelacionamentos(){
     this.relacionamentoService.listRelacionamentos(this.user.username).subscribe(response => {
+      
       this.relationamentos = response;
+
+      this.relationamentos.forEach(rela => {
+        
+
+        
+      });
+
+    })
+  }
+
+  getAvaliaLikes(){
+    this.midiaService.getAvaliaLikes(this.user.username).subscribe(response => {
+      this.userLikes = response;
+    })
+  }
+
+  removerLike(avalialike:AvaliaLike){
+
+       this.midiaService.removeLike(avalialike).subscribe(response => {
+        this.getAvaliaLikes();
     })
   }
 

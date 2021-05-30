@@ -14,6 +14,8 @@ import { Filme } from '../_models/filme';
 import { Livro } from '../_models/livro';
 import { Midia } from '../_models/midia';
 import { Avaliacao } from '../_models/avaliacao';
+import { Comentario } from '../_models/comentario';
+import { AvaliaLike } from '../_models/avaliaLike';
 
 @Injectable({
   providedIn: 'root'
@@ -112,8 +114,11 @@ export class MidiaService {
 
   }
 
-  getAvaliacoes(id:string){
-    return this.http.get<Partial<Avaliacao[]>>(this.baseUrl + 'avalia/' + id);
+  getAvaliacoes(id:string, username:string){
+
+   
+    return this.http.get<Partial<Avaliacao[]>>(this.baseUrl + 'avalia/getavaliacoes/' + id + '?username=' + username);
+    
   }
 
   
@@ -133,12 +138,37 @@ export class MidiaService {
     return this.http.post(this.baseUrl + 'midia/likes' + username, {})
   }
 
-  addLike(username: string) {
-    return this.http.post(this.baseUrl + 'midia/likes' + username, {})
+  addAvaliaLike(avaliaLike: AvaliaLike) {
+    return this.http.post(this.baseUrl + 'avalia/addlike', avaliaLike).pipe(
+      map(() => {
+      
+      })
+    )
   }
+
+  getAvaliaLikes(username:string) {
+    return this.http.get<Partial<AvaliaLike[]>>(this.baseUrl + 'avalia/getLikes/' + username);
+  }
+
+  removeLike(avaliaLike:AvaliaLike){
+    return this.http.post(this.baseUrl + 'avalia/removelike', avaliaLike).pipe(
+      map(() => {
+      
+      })
+    )
+  }
+
 
   aprovar(id:string){
     return this.http.get(this.baseUrl + 'midia/aprovamidia/' + id, {})
+  }
+
+  addComentario(comenta:Comentario){
+    return this.http.post(this.baseUrl + 'avalia/addComentario', comenta).pipe(
+      map(() => {
+      
+      })
+    )
   }
 
 }

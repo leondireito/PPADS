@@ -72,3 +72,4 @@ C:\Users\jmp20\OneDrive\Documentos\Faculdade\PPADS\RecommendApp\backEnd\Recommen
 C:\Users\jmp20\OneDrive\Documentos\Faculdade\PPADS\RecommendApp\backEnd\RecommendAPI\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\jmp20\OneDrive\Documentos\Faculdade\PPADS\RecommendApp\backEnd\RecommendAPI\bin\Debug\net5.0\Microsoft.Extensions.WebEncoders.dll
 C:\Users\jmp20\OneDrive\Documentos\Faculdade\PPADS\RecommendApp\backEnd\RecommendAPI\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\jmp20\OneDrive\Documentos\Faculdade\PPADS\RecommendApp\backEnd\RecommendAPI\bin\Debug\net5.0\web.config

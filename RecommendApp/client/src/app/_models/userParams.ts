@@ -6,8 +6,8 @@ export class UserParams {
     maxAge = 99;
     pageNumber = 1;
     pageSize = 7;
-    username:string;
-    name:string;
+    username:string= '';
+    name:string= '';
     midiaTitulo:string = '';
     midiaTipo:string ='3';
     orderBy = 'lastActive';

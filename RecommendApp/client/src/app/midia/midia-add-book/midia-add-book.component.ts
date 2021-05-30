@@ -53,14 +53,15 @@ export class MidiaAddBookComponent implements OnInit {
 
   addMidia() {
     this.midiaService.setLivro(this.registerForm.value).subscribe(response => {
-      this.router.navigateByUrl('/midias');
+      this.toastr.success('Livo adicionado');
+      this.registerForm.reset();
     }, error => {
       this.validationErrors = error;
     })
   }
 
   cancel() {
-    this.router.navigateByUrl('/midias');
+    this.registerForm.reset();
   }
 
 }

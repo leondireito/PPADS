@@ -29,17 +29,29 @@ namespace RecommendAPI.Helpers
             CreateMap<MidiaDto, Midia>()
             .ForMember(dest => dest.Integrantes, opt => opt.MapFrom(src => src.Integrantes));
 
-             CreateMap<Avaliacao, AvaliacaoDto>()
-            .ForMember(dest => dest.AvaliadoPorUsername, opt => opt.MapFrom(src => src.AvaliadoPor.UserName))
-            .ForMember(dest => dest.AvaliadoPorNome, opt => opt.MapFrom(src => src.AvaliadoPor.Name))
-            .ForMember(dest => dest.MidiaAvaliadaId, opt => opt.MapFrom(src => src.MidiaAvaliada.Id))
-            .ForMember(dest => dest.MidiaTitulo, opt => opt.MapFrom(src => src.MidiaAvaliada.Titulo));
+            CreateMap<Avaliacao, AvaliacaoDto>()
+           .ForMember(dest => dest.AvaliadoPorUsername, opt => opt.MapFrom(src => src.AvaliadoPor.UserName))
+           .ForMember(dest => dest.AvaliadoPorNome, opt => opt.MapFrom(src => src.AvaliadoPor.Name))
+           .ForMember(dest => dest.MidiaAvaliadaId, opt => opt.MapFrom(src => src.MidiaAvaliada.Id))
+           .ForMember(dest => dest.MidiaTitulo, opt => opt.MapFrom(src => src.MidiaAvaliada.Titulo))
+           .ForMember(dest => dest.LikesCount, opt => opt.MapFrom(src => src.Likes.Count));
 
-             CreateMap<AvaliacaoDto, Avaliacao>();
-              CreateMap<Relacionamento, RelacionamentoDto>()
-              .ForMember(dest => dest.UserConvida, opt => opt.MapFrom(src => src.UserConvida.UserName))
-              .ForMember(dest => dest.UserConvidado, opt => opt.MapFrom(src => src.UserConvidado.UserName));
-           
+            CreateMap<AvaliacaoDto, Avaliacao>();
+            CreateMap<Relacionamento, RelacionamentoDto>()
+            .ForMember(dest => dest.UserConvida, opt => opt.MapFrom(src => src.AppUser.UserName))
+            .ForMember(dest => dest.UserConvidado, opt => opt.MapFrom(src => src.UserConvidado.UserName));
+
+            CreateMap<Comentario, ComentarioDto>()
+             .ForMember(dest => dest.AvaliacaoId, opt => opt.MapFrom(src => src.Avaliacao.Id))
+             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName));
+
+              CreateMap<AvaliacaolLike, AvaliacaoLikesDto>()
+            .ForMember(dest => dest.Avaliacaode, opt => opt.MapFrom(src => src.Avaliacao.AvaliadoPorUsername))
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.AppUser.UserName));
+
+            
+         
+
 
 
 

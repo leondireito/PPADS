@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { ChartsModule } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,6 +45,9 @@ import { MidiaDetailComponent } from './midia/midia-detail/midia-detail.componen
 import { MidiaParticipanteComponent } from './midia/midia-participante/midia-participante.component';
 import { MidiaPhotoComponent } from './midia/midia-photo/midia-photo.component';
 import { MidiaAvaliacaoComponent } from './midia/midia-avaliacao/midia-avaliacao.component';
+import { ComentaModalComponent } from './modals/comenta-modal/comenta-modal.component';
+import { AdminChartComponent } from './admin/admin-chart/admin-chart.component';
+
 
 @NgModule({
   declarations: [
@@ -79,7 +83,10 @@ import { MidiaAvaliacaoComponent } from './midia/midia-avaliacao/midia-avaliacao
     MidiaDetailComponent,
     MidiaParticipanteComponent,
     MidiaPhotoComponent,
-    MidiaAvaliacaoComponent
+    MidiaAvaliacaoComponent,
+    ComentaModalComponent,
+    AdminChartComponent,
+    
   
   ],
   imports: [
@@ -92,6 +99,7 @@ import { MidiaAvaliacaoComponent } from './midia/midia-avaliacao/midia-avaliacao
     SharedModule,
     NgxSpinnerModule,
     NgxSliderModule,
+    ChartsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

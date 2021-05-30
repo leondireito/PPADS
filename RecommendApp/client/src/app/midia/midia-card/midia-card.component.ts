@@ -21,9 +21,7 @@ export class MidiaCardComponent implements OnInit {
   }
 
   addLike(midia: Midia) {
-    this.midiaService.addLike(midia.username).subscribe(() => {
-      this.toastr.success('Voce deu um like para ' + midia.username);
-    })
+   
   }
 
 }

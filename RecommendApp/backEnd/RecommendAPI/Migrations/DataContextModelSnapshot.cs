@@ -290,6 +290,54 @@ namespace RecommendAPI.Migrations
                     b.ToTable("Avaliacoes");
                 });
 
+            modelBuilder.Entity("RecommendAPI.Entities.AvaliacaolLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AvaliacaoId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("AvaliacaoId");
+
+                    b.ToTable("AvaliacaoLikes");
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.Comentario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AvaliacaoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Comenta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AvaliacaoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comentarios");
+                });
+
             modelBuilder.Entity("RecommendAPI.Entities.Connection", b =>
                 {
                     b.Property<string>("ConnectionId")
@@ -508,21 +556,21 @@ namespace RecommendAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("DataProposta")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserConvidaId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserConvidadoId")
+                    b.Property<int?>("UserConvidadoId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserConvidaId");
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("UserConvidadoId");
 
@@ -685,6 +733,42 @@ namespace RecommendAPI.Migrations
                     b.Navigation("MidiaAvaliada");
                 });
 
+            modelBuilder.Entity("RecommendAPI.Entities.AvaliacaolLike", b =>
+                {
+                    b.HasOne("RecommendAPI.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RecommendAPI.Entities.Avaliacao", "Avaliacao")
+                        .WithMany("Likes")
+                        .HasForeignKey("AvaliacaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Avaliacao");
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.Comentario", b =>
+                {
+                    b.HasOne("RecommendAPI.Entities.Avaliacao", "Avaliacao")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("AvaliacaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RecommendAPI.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Avaliacao");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("RecommendAPI.Entities.Connection", b =>
                 {
                     b.HasOne("RecommendAPI.Entities.Group", null)
@@ -709,9 +793,9 @@ namespace RecommendAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("RecommendAPI.Entities.AppUser", "Sender")
-                        .WithMany("MessagesSent")
+                        .WithMany()
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Recipient");
@@ -760,19 +844,15 @@ namespace RecommendAPI.Migrations
 
             modelBuilder.Entity("RecommendAPI.Entities.Relacionamento", b =>
                 {
-                    b.HasOne("RecommendAPI.Entities.AppUser", "UserConvida")
+                    b.HasOne("RecommendAPI.Entities.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("UserConvidaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId");
 
                     b.HasOne("RecommendAPI.Entities.AppUser", "UserConvidado")
                         .WithMany()
-                        .HasForeignKey("UserConvidadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserConvidadoId");
 
-                    b.Navigation("UserConvida");
+                    b.Navigation("AppUser");
 
                     b.Navigation("UserConvidado");
                 });
@@ -848,8 +928,6 @@ namespace RecommendAPI.Migrations
 
                     b.Navigation("MessagesReceived");
 
-                    b.Navigation("MessagesSent");
-
                     b.Navigation("Photos");
 
                     b.Navigation("UserRoles");
@@ -858,6 +936,13 @@ namespace RecommendAPI.Migrations
             modelBuilder.Entity("RecommendAPI.Entities.Autor", b =>
                 {
                     b.Navigation("Livros");
+                });
+
+            modelBuilder.Entity("RecommendAPI.Entities.Avaliacao", b =>
+                {
+                    b.Navigation("Comentarios");
+
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("RecommendAPI.Entities.Elenco", b =>

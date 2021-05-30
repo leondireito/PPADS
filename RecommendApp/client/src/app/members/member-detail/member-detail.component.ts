@@ -12,6 +12,8 @@ import { take } from 'rxjs/operators';
 import { Avaliacao } from 'src/app/_models/avaliacao';
 import { MidiaService } from 'src/app/_services/midia.service';
 import { RelacionamentoService } from 'src/app/_services/relacionamento.service';
+import { Relacionamento } from 'src/app/_models/relacionamento';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-member-detail',
@@ -27,12 +29,13 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   user: User;
   avaliacaoList: Avaliacao [];
+  amigosEmComum: string[];
 
   constructor( private route: ActivatedRoute, 
      private accountService: AccountService,
      private midiaService:MidiaService,
      private relacionamentoService:RelacionamentoService,
-    private router: Router) { 
+    private router: Router,private toastr: ToastrService) { 
       this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
@@ -59,6 +62,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
     this.galleryImages = this.getImages();
     this.getAvaliacoes();
+    this.getAmigosEmComum();
   }
 
   getAvaliacoes(){
@@ -71,8 +75,15 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   proporRealacionamento(){
   
   this.relacionamentoService.propor(this.user.username,this.member.username).subscribe(response => {
-          
+    this.toastr.success('Relacionamento adicionado');
    })
+  }
+
+  getAmigosEmComum(){
+    this.relacionamentoService.listAmigosEmComum(this.user.username, this.member.username).subscribe(response => {
+      this.amigosEmComum = response;
+     
+    })
   }
 
   getImages(): NgxGalleryImage[] {
@@ -102,6 +113,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     } else {
      
     }
+  }
+
+  voltar(username:string) {
+    this.router.navigateByUrl('/members/' + username);
   }
 
   ngOnDestroy(): void {

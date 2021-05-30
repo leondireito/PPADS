@@ -57,7 +57,8 @@ export class MidiaAddSerieComponent implements OnInit {
 
     console.log(this.registerForm.value);
     this.midiaService.setSerie(this.registerForm.value).subscribe(response => {
-      this.router.navigateByUrl('/midias');
+      this.toastr.success('Serie adicionada');
+      this.registerForm.reset();
     }, error => {
       this.validationErrors = error;
     })
@@ -66,7 +67,7 @@ export class MidiaAddSerieComponent implements OnInit {
   
 
   cancel() {
-    this.router.navigateByUrl('/midias');
+    this.registerForm.reset();
   }
 
 

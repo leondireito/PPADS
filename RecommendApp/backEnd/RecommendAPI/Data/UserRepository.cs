@@ -36,14 +36,20 @@ namespace RecommendAPI.Data
             var query = _context.Users.AsQueryable();
 
             query = query.Where(u => u.UserName != userParams.CurrentUsername);
+
+
+            if (!string.IsNullOrEmpty(userParams.Username))
+                query = query.Where(u => u.UserName.Contains(userParams.Username));
+
+
             query = userParams.OrderBy switch
             {
                 "created" => query.OrderByDescending(u => u.Created),
                 _ => query.OrderByDescending(u => u.LastActive)
             };
-            
+
             return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper
-                .ConfigurationProvider).AsNoTracking(), 
+                .ConfigurationProvider).AsNoTracking(),
                     userParams.PageNumber, userParams.PageSize);
         }
 
